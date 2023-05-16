@@ -114,14 +114,12 @@ posts.forEach(post => {
 });
 
 const js_like_buttons = document.querySelectorAll(".js-like-button");
-/* const js_likes_counters = document.querySelectorAll(".js-likes-counter");
+let likesArray = [];
 
-console.log(js_likes_counters);
- */
 js_like_buttons.forEach((element) => {
     const counter = element.getAttribute("data-postid");
     const thisLikeCounter = document.getElementById(`like-counter-${counter}`);
-
+    let newObj = {id:counter};
     
     element.addEventListener("click",
         function likeButtonAction() {
@@ -130,9 +128,22 @@ js_like_buttons.forEach((element) => {
             if (element.classList.contains("like-button--liked")) {
                 element.classList.remove("like-button--liked")
                 thisLikeCounter.innerHTML = parseInt(thisLikeCounter.innerHTML) - 1;
+
+                likesArray = likesArray.filter(
+                    function(object) {
+                        return object.id !== counter;
+                    }
+                );
+                console.log(likesArray);
+
+
+
             }else{
                 element.classList.add("like-button--liked")
                 thisLikeCounter.innerHTML = parseInt(thisLikeCounter.innerHTML) + 1;
+                
+                likesArray.push(newObj);
+                console.log(likesArray);
             }
         }
     )
