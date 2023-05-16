@@ -11,6 +11,9 @@ Creiamo il nostro array di oggetti che rappresentano ciascun post. Ogni post dov
 /* Milestone 2 - Stampiamo i post del nostro feed.
  */
 
+/* Milestone 3 - Se clicchiamo sul tasto “Mi Piace” cambiamo il colore al testo del bottone e incrementiamo il counter dei likes relativo.
+Salviamo in un secondo array gli id dei post ai quali abbiamo messo il like. */
+
 const posts = [
     {
         "id": 1,
@@ -74,39 +77,68 @@ const container = document.getElementById("container");
 
 
 // Inserisco i post nel DOM in modo dinamico
-posts.forEach(element => {
-let postCreatedSince = new Date - element.created;
-console.log(postCreatedSince);
+posts.forEach(post => {
 
     container.innerHTML += 
     `<div class="post">
     <div class="post__header">
         <div class="post-meta">                    
             <div class="post-meta__icon">
-                <img class="profile-pic" src=${element.author.image} alt=${element.author.name}>                    
+                <img class="profile-pic" src=${post.author.image} alt=${post.author.name}>                    
             </div>
             <div class="post-meta__data">
-                <div class="post-meta__author">${element.author.name}</div>
-                <div class="post-meta__time">${element.created}</div>
+                <div class="post-meta__author">${post.author.name}</div>
+                <div class="post-meta__time">${post.created}</div>
             </div>                    
         </div>
     </div>
-    <div class="post__text">${element.content}</div>
+    <div class="post__text">${post.content}</div>
     <div class="post__image">
-        <img src=${element.media} alt="">
+        <img src=${post.media} alt="">
     </div>
     <div class="post__footer">
         <div class="likes js-likes">
             <div class="likes__cta">
-                <a class="like-button  js-like-button" href="#" data-postid="1">
+                <a class="like-button  js-like-button" href="#${post.id}" data-postid="${post.id}">
                     <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                     <span class="like-button__label">Mi Piace</span>
                 </a>
             </div>
             <div class="likes__counter">
-                Piace a <b id="like-counter-1" class="js-likes-counter">${element.likes}</b> persone
+                Piace a <b id="like-counter-${post.id}" class="js-likes-counter">${post.likes}</b> persone
             </div>
         </div> 
     </div>            
 </div>`
+
 });
+
+const js_like_buttons = document.querySelectorAll(".js-like-button");
+/* const js_likes_counters = document.querySelectorAll(".js-likes-counter");
+
+console.log(js_likes_counters);
+ */
+js_like_buttons.forEach((element) => {
+    const counter = element.getAttribute("data-postid");
+    const thisLikeCounter = document.getElementById(`like-counter-${counter}`);
+
+    
+    element.addEventListener("click",
+        function likeButtonAction() {
+            console.log("you clicked");
+            
+            if (element.classList.contains("like-button--liked")) {
+                element.classList.remove("like-button--liked")
+                thisLikeCounter.innerHTML = parseInt(thisLikeCounter.innerHTML) - 1;
+            }else{
+                element.classList.add("like-button--liked")
+                thisLikeCounter.innerHTML = parseInt(thisLikeCounter.innerHTML) + 1;
+            }
+        }
+    )
+});
+
+
+
+
+
