@@ -92,6 +92,7 @@ let reversedSplitDate = splitDate.reverse();
 let italianFormatDate = reversedSplitDate.join("-");
 console.log(italianFormatDate);
 
+// Inserisco il contenuto del DOM in modo dinamico
     container.innerHTML += 
     `<div class="post">
     <div class="post__header">
@@ -123,46 +124,47 @@ console.log(italianFormatDate);
         </div> 
     </div>            
 </div>`
-
 });
 
+// Seleziono tutti i buttons
 const js_like_buttons = document.querySelectorAll(".js-like-button");
+// Array da popolare con gli ID dei post "liked"
 let likesArray = [];
 
+// Seleziono ogni button (con forEach)
 js_like_buttons.forEach((element) => {
+    //dichiaro counter che sia equivalente all'ID dell'elemento
     const counter = element.getAttribute("data-postid");
+    //creo il counter che corrisponde all'ID
     const thisLikeCounter = document.getElementById(`like-counter-${counter}`);
+    //creo l'oggetto con proprietà ID da aggiungere al likeArray ogni volta che si clicca su like
     let newObj = {id:counter};
     
+    // Click sul like button
     element.addEventListener("click",
         function likeButtonAction() {
-            console.log("you clicked");
             
+            // Se è già "liked"
             if (element.classList.contains("like-button--liked")) {
                 element.classList.remove("like-button--liked")
+                // tolgo il like dal contatore
                 thisLikeCounter.innerHTML = parseInt(thisLikeCounter.innerHTML) - 1;
-
+                // tolgo l'ID dal likesArray
                 likesArray = likesArray.filter(
                     function(object) {
                         return object.id !== counter;
                     }
                 );
                 console.log(likesArray);
-
-
-
+            // Se non è ancora "liked"        
             }else{
                 element.classList.add("like-button--liked")
+                // aggiungo al contatore
                 thisLikeCounter.innerHTML = parseInt(thisLikeCounter.innerHTML) + 1;
-                
+                //aggiungo all'Array
                 likesArray.push(newObj);
                 console.log(likesArray);
             }
         }
     )
 });
-
-
-
-
-
