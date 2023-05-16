@@ -14,6 +14,11 @@ Creiamo il nostro array di oggetti che rappresentano ciascun post. Ogni post dov
 /* Milestone 3 - Se clicchiamo sul tasto “Mi Piace” cambiamo il colore al testo del bottone e incrementiamo il counter dei likes relativo.
 Salviamo in un secondo array gli id dei post ai quali abbiamo messo il like. */
 
+/* BONUS possibili
+Formattare le date in formato italiano (gg/mm/aaaa)
+Gestire l’assenza dell’immagine profilo con un elemento di fallback che contiene le iniziali dell’utente (es. Luca Formicola > LF).
+Al click su un pulsante “Mi Piace” di un post, se abbiamo già cliccato dobbiamo decrementare il contatore e cambiare il colore del bottone. */
+
 const posts = [
     {
         "id": 1,
@@ -72,12 +77,20 @@ const posts = [
     }
 ];
 
+
+
 // reference a elementi in HTML
 const container = document.getElementById("container");
 
 
 // Inserisco i post nel DOM in modo dinamico
 posts.forEach(post => {
+
+// Data formato italiano
+let splitDate = post.created.split("-");
+let reversedSplitDate = splitDate.reverse();
+let italianFormatDate = reversedSplitDate.join("-");
+console.log(italianFormatDate);
 
     container.innerHTML += 
     `<div class="post">
@@ -88,7 +101,7 @@ posts.forEach(post => {
             </div>
             <div class="post-meta__data">
                 <div class="post-meta__author">${post.author.name}</div>
-                <div class="post-meta__time">${post.created}</div>
+                <div class="post-meta__time">${italianFormatDate}</div>
             </div>                    
         </div>
     </div>
