@@ -77,53 +77,44 @@ const posts = [
     }
 ];
 
-
-
 // reference a elementi in HTML
 const container = document.getElementById("container");
-
 
 // Inserisco i post nel DOM in modo dinamico
 posts.forEach(post => {
 
-// Data formato italiano
-let splitDate = post.created.split("-");
-let reversedSplitDate = splitDate.reverse();
-let italianFormatDate = reversedSplitDate.join("-");
-console.log(italianFormatDate);
-
-// Inserisco il contenuto del DOM in modo dinamico
+    // Inserisco il contenuto del DOM in modo dinamico
     container.innerHTML += 
     `<div class="post">
-    <div class="post__header">
-        <div class="post-meta">                    
-            <div class="post-meta__icon">
-                <img class="profile-pic" src=${post.author.image} alt=${post.author.name}>                    
+        <div class="post__header">
+            <div class="post-meta">                    
+                <div class="post-meta__icon">
+                    <img class="profile-pic" src=${post.author.image} alt=${userInitials(post.author.name)}>                 
+                </div>
+                <div class="post-meta__data">
+                    <div class="post-meta__author">${post.author.name}</div>
+                    <div class="post-meta__time">${italianDate(post.created)}</div>
+                </div>                    
             </div>
-            <div class="post-meta__data">
-                <div class="post-meta__author">${post.author.name}</div>
-                <div class="post-meta__time">${italianFormatDate}</div>
-            </div>                    
         </div>
-    </div>
-    <div class="post__text">${post.content}</div>
-    <div class="post__image">
-        <img src=${post.media} alt="">
-    </div>
-    <div class="post__footer">
-        <div class="likes js-likes">
-            <div class="likes__cta">
-                <a class="like-button  js-like-button" href="#${post.id}" data-postid="${post.id}">
-                    <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
-                    <span class="like-button__label">Mi Piace</span>
-                </a>
-            </div>
-            <div class="likes__counter">
-                Piace a <b id="like-counter-${post.id}" class="js-likes-counter">${post.likes}</b> persone
-            </div>
-        </div> 
-    </div>            
-</div>`
+        <div class="post__text">${post.content}</div>
+        <div class="post__image">
+            <img src=${post.media} alt="">
+        </div>
+        <div class="post__footer">
+            <div class="likes js-likes">
+                <div class="likes__cta">
+                    <a class="like-button  js-like-button" href="#" data-postid="${post.id}">
+                        <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                        <span class="like-button__label">Mi Piace</span>
+                    </a>
+                </div>
+                <div class="likes__counter">
+                    Piace a <b id="like-counter-${post.id}" class="js-likes-counter">${post.likes}</b> persone
+                </div>
+            </div> 
+        </div>            
+    </div>`
 });
 
 // Seleziono tutti i buttons
@@ -142,8 +133,9 @@ js_like_buttons.forEach((element) => {
     
     // Click sul like button
     element.addEventListener("click",
-        function likeButtonAction() {
-            
+        function likeButtonAction(event) {
+            // interrompe comportamento default del button
+            event.preventDefault();
             // Se è già "liked"
             if (element.classList.contains("like-button--liked")) {
                 element.classList.remove("like-button--liked")
@@ -168,3 +160,21 @@ js_like_buttons.forEach((element) => {
         }
     )
 });
+
+/* FINCTIONS */
+// Data formato italiano
+function italianDate(date) {
+    let splitDate = date.split("-");
+    let reversedSplitDate = splitDate.reverse();
+    let italianFormatDate = reversedSplitDate.join("-");
+    return italianFormatDate;
+}
+
+// Genera Iniziali
+function userInitials(fullName) {
+    let userNameArr = fullName.split(" ");
+    userNameInitialsArr = userNameArr.map(element=>{
+    return element.substring(0,1);
+    });
+return userNameInitialsArr.join("");
+}

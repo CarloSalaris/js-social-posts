@@ -46,6 +46,14 @@ h1 {
 
 .post-meta__icon {
     margin-right: 24px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: cadetblue;
+    border-radius: 50%;
+    color: #ffffff;
 }
 
 .post-meta__data {
