@@ -1,24 +1,32 @@
+/*********************************
+ *           CONSEGNA            *
+ *********************************/
+
 /* MILESTONE 1
-Creiamo il nostro array di oggetti che rappresentano ciascun post. Ogni post dovrà avere le informazioni necessarie per stampare la relativa card:
-- id del post, numero progressivo da 1 a n
-- nome autore,
-- foto autore,
-- data in formato americano (mm-gg-yyyy),
-- testo del post,
-- immagine (non tutti i post devono avere una immagine),
-- numero di likes. */
+    Creiamo il nostro array di oggetti che rappresentano ciascun post. Ogni post dovrà avere le informazioni necessarie per stampare la relativa card:
+    - id del post, numero progressivo da 1 a n
+    - nome autore,
+    - foto autore,
+    - data in formato americano (mm-gg-yyyy),
+    - testo del post,
+    - immagine (non tutti i post devono avere una immagine),
+    - numero di likes. */
+/* MILESTONE 2
+    Stampiamo i post del nostro feed.*/
+/* MILESTONE 3
+    Se clicchiamo sul tasto “Mi Piace” cambiamo il colore al testo del bottone e incrementiamo il counter dei likes relativo.
+    Salviamo in un secondo array gli id dei post ai quali abbiamo messo il like. */
 
-/* Milestone 2 - Stampiamo i post del nostro feed.
- */
+/* BONUS
+    - Formattare le date in formato italiano (gg/mm/aaaa)
+    - Gestire l’assenza dell’immagine profilo con un elemento di fallback che contiene le iniziali dell’utente (es. Luca Formicola > LF).
+    - Al click su un pulsante “Mi Piace” di un post, se abbiamo già cliccato dobbiamo decrementare il contatore e cambiare il colore del bottone. */
 
-/* Milestone 3 - Se clicchiamo sul tasto “Mi Piace” cambiamo il colore al testo del bottone e incrementiamo il counter dei likes relativo.
-Salviamo in un secondo array gli id dei post ai quali abbiamo messo il like. */
+/*********************************
+ *           SVILUPPO            *
+ *********************************/
 
-/* BONUS possibili
-Formattare le date in formato italiano (gg/mm/aaaa)
-Gestire l’assenza dell’immagine profilo con un elemento di fallback che contiene le iniziali dell’utente (es. Luca Formicola > LF).
-Al click su un pulsante “Mi Piace” di un post, se abbiamo già cliccato dobbiamo decrementare il contatore e cambiare il colore del bottone. */
-
+// Array di oggetti (social posts)
 const posts = [
     {
         "id": 1,
@@ -83,7 +91,7 @@ const container = document.getElementById("container");
 // Inserisco i post nel DOM in modo dinamico
 posts.forEach(post => {
 
-    // Inserisco il contenuto del DOM in modo dinamico
+    // Inserisco il contenuto nel container
     container.innerHTML += 
     `<div class="post">
         <div class="post__header">
@@ -117,14 +125,14 @@ posts.forEach(post => {
     </div>`
 });
 
-// Seleziono tutti i buttons
+// Seleziono tutti i like buttons
 const js_like_buttons = document.querySelectorAll(".js-like-button");
 // Array da popolare con gli ID dei post "liked"
 let likesArray = [];
 
 // Seleziono ogni button (con forEach)
 js_like_buttons.forEach((element) => {
-    //dichiaro counter che sia equivalente all'ID dell'elemento
+    //dichiaro un counter che sia equivalente all'ID dell'elemento
     const counter = element.getAttribute("data-postid");
     //creo il counter che corrisponde all'ID
     const thisLikeCounter = document.getElementById(`like-counter-${counter}`);
@@ -134,8 +142,7 @@ js_like_buttons.forEach((element) => {
     // Click sul like button
     element.addEventListener("click",
         function likeButtonAction(event) {
-            // interrompe comportamento default del button
-            event.preventDefault();
+            event.preventDefault();// interrompe comportamento default del button
             // Se è già "liked"
             if (element.classList.contains("like-button--liked")) {
                 element.classList.remove("like-button--liked")
@@ -147,34 +154,37 @@ js_like_buttons.forEach((element) => {
                         return object.id !== counter;
                     }
                 );
-                console.log(likesArray);
-            // Se non è ancora "liked"        
+            // Se non è ancora "liked"
             }else{
                 element.classList.add("like-button--liked")
                 // aggiungo al contatore
                 thisLikeCounter.innerHTML = parseInt(thisLikeCounter.innerHTML) + 1;
                 //aggiungo all'Array
                 likesArray.push(newObj);
-                console.log(likesArray);
             }
+            console.log(likesArray); //Array ID posts liked
         }
     )
 });
 
-/* FINCTIONS */
-// Data formato italiano
+/*********************************
+ *           FUNCTIONS            *
+ *********************************/
+
+// Data formato italiano (gg-mm-aaaa)
 function italianDate(date) {
     let splitDate = date.split("-");
     let reversedSplitDate = splitDate.reverse();
     let italianFormatDate = reversedSplitDate.join("-");
+    
     return italianFormatDate;
 }
-
-// Genera Iniziali
-function userInitials(fullName) {
-    let userNameArr = fullName.split(" ");
-    userNameInitialsArr = userNameArr.map(element=>{
-    return element.substring(0,1);
+// Genera Iniziali (prima lettera di ogni parola contenuta nella stringa fullString)
+function userInitials(fullString) {
+    let fullStringArr = fullString.split(" ");
+    initialsArr = fullStringArr.map(element=>{
+    return element.substring(0,1);// Seleziono la prima lettera di ogni stringa
     });
-return userNameInitialsArr.join("");
+    
+    return initialsArr.join("");
 }
