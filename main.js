@@ -128,7 +128,7 @@ posts.forEach(post => {
 // Seleziono tutti i like buttons
 const js_like_buttons = document.querySelectorAll(".js-like-button");
 // Array da popolare con gli ID dei post "liked"
-let likesArray = [];
+let likesArray = []; // inutile. Sarebbe meglio aggiungere una proprietà "liked: true/false" all'oggetto
 
 // Seleziono ogni button (con forEach)
 js_like_buttons.forEach((element) => {
